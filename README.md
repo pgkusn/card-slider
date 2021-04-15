@@ -1,24 +1,7 @@
-# card-slider
+# 純資料排序卡片切換展示
 
-## Project setup
-```
-npm install
-```
+## 影片連結
+https://youtu.be/eIz9x9nOeM0
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 範例連結
+https://github.com/achen224/vuejs-playground/tree/feature/card-slider
