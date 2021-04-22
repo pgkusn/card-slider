@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div :class="['slider', { 'sm': screens.sm, 'md': screens.md }]">
+        <div class="slider">
             <transition-group name="flip-list">
                 <div
                     v-for="img in showImgs"
@@ -24,21 +24,19 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref } from 'vue';
 import { throttle } from 'lodash';
 import data from '@/data.json';
-import { useMediaSensor, screens } from '@/composition/mediaSensor.js';
 
 export default {
     name: 'App',
     setup () {
         const currentIndex = ref(0);
-        const slidesPerView = ref(1);
         const imgs = computed(() => data);
         const allImgs = computed(() => {
             const newImgs = [];
             let count = 0;
-            while (newImgs.length < slidesPerView.value + 6) {
+            while (newImgs.length < 5 + 4) {
                 for (const img of imgs.value) {
                     newImgs.push({
                         index: count++,
@@ -57,25 +55,20 @@ export default {
             currentIndex.value = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
         }, 300);
 
-        // response
-        useMediaSensor();
-        watchEffect(() => {
-            slidesPerView.value = screens.sm ? 3 : screens.md ? 5 : 1;
-        });
-
         return {
             imgs,
             allImgs,
             showImgs,
             currentIndex,
-            changeSlide,
-            screens
+            changeSlide
         };
     }
 };
 </script>
 
 <style lang="scss">
+$sm-screen: 576;
+$md-screen: 768;
 * {
     margin: 0;
 }
@@ -86,10 +79,10 @@ export default {
     display: flex;
     margin-left: calc(-4 * 100%);
     width: 100%;
-    &.sm {
+    @media (min-width: #{$sm-screen}px) {
         margin-left: calc(-3.5 * 50%);
     }
-    &.md {
+    @media (min-width: #{$md-screen}px) {
         margin-left: calc(-2.5 * 25%);
     }
 }
@@ -105,11 +98,11 @@ export default {
         width: 100%;
         object-fit: cover;
     }
-    @at-root .slider.sm > .slide {
+    @media (min-width: #{$sm-screen}px) {
         width: calc(50% - 20px);
         cursor: pointer;
     }
-    @at-root .slider.md > .slide {
+    @media (min-width: #{$md-screen}px) {
         width: calc(25% - 20px);
     }
 }
