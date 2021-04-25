@@ -7,6 +7,7 @@
                     :key="img.index"
                     class="slide"
                     @click="changeSlide(img.index)"
+                    @transitionend="transitionendHandler"
                 >
                     <img :src="img.src" alt="">
                 </div>
@@ -25,7 +26,6 @@
 
 <script>
 import { computed, ref } from 'vue';
-import { throttle } from 'lodash';
 import data from '@/data.json';
 
 export default {
@@ -50,17 +50,24 @@ export default {
             const start = currentIndex.value - 4;
             return allImgs.value.slice(start).concat(allImgs.value.slice(0, start));
         });
-        const changeSlide = throttle(index => {
+        const changeSlide = index => {
+            if (isTransition) return;
             const lastIndex = allImgs.value.length - 1;
             currentIndex.value = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
-        }, 300);
+            isTransition = true;
+        };
+        let isTransition = false;
+        const transitionendHandler = () => {
+            isTransition = false;
+        };
 
         return {
             imgs,
             allImgs,
             showImgs,
             currentIndex,
-            changeSlide
+            changeSlide,
+            transitionendHandler
         };
     }
 };
@@ -114,6 +121,6 @@ $md-screen: 768;
     }
 }
 .flip-list-move {
-    transition: transform .5s;
+    transition: transform .4s;
 }
 </style>
