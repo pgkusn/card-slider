@@ -51,13 +51,16 @@ export default {
             return allImgs.value.slice(start).concat(allImgs.value.slice(0, start));
         });
         const changeSlide = index => {
+            // console.log(isTransition);
             if (isTransition) return;
             const lastIndex = allImgs.value.length - 1;
             currentIndex.value = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
             isTransition = true;
+            if (currentIndex.value === index) isTransition = false;
         };
         let isTransition = false;
         const transitionendHandler = () => {
+            // console.log(isTransition);
             isTransition = false;
         };
 
