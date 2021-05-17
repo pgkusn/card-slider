@@ -31,6 +31,7 @@ import data from '@/data.json';
 export default {
     name: 'App',
     setup () {
+        let isTransition = false;
         const currentIndex = ref(0);
         const imgs = computed(() => data);
         const allImgs = computed(() => {
@@ -51,16 +52,12 @@ export default {
             return allImgs.value.slice(start).concat(allImgs.value.slice(0, start));
         });
         const changeSlide = index => {
-            // console.log(isTransition);
-            if (isTransition) return;
+            if (isTransition || currentIndex.value === index) return;
             const lastIndex = allImgs.value.length - 1;
             currentIndex.value = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
             isTransition = true;
-            if (currentIndex.value === index) isTransition = false;
         };
-        let isTransition = false;
         const transitionendHandler = () => {
-            // console.log(isTransition);
             isTransition = false;
         };
 
